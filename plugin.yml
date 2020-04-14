@@ -1,0 +1,31 @@
+name: LYword
+main: lyword.lyword
+version: 2.0
+author: LinYan+QQ1223233300
+commands:
+  lyhelp:
+    description: 插件帮助
+  lyreload:
+    description: 重载插件
+  lynotice:
+    description: 喊话
+  lyclear:
+    description: 清屏
+permissions:
+  lyword.*:
+    description: 给予lyword所有命令权限
+    children:
+      lyword.reload: true
+      lyword.bypass: true
+  lyword.reload:
+    description: 重载LYword的配置文件的权限
+    default: op
+  lyword.bypass:
+    description: 可以发送脏话
+    default: op
+  lyword.notice:
+    description: 喊话
+    default: op
+  lyword.clear:
+    description: 清屏
+    default: op
