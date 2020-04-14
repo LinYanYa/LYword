@@ -1,0 +1,42 @@
+package lyword.word;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
+
+import java.util.Iterator;
+
+public class word implements Listener {
+    @EventHandler
+    public void chat(AsyncPlayerChatEvent event) {
+        Plugin plugin = lyword.lyword.getPlugin(lyword.lyword.class);
+        Player player = event.getPlayer();
+        String getmsg = event.getMessage();
+        Iterator bad = plugin.getConfig().getStringList("badword.word").iterator();
+        String c = plugin.getConfig().getString("badword.command").replaceAll("%player%", player.getName());
+        if (plugin.getConfig().getBoolean("badword.enable")){
+            while (bad.hasNext()) {
+                String msg = (String)bad.next();
+                if (player.hasPermission("lyword.bypass")){
+                    if (getmsg.contains(msg)) {
+                        player.sendTitle(plugin.getConfig().getString("badword.bypass.title"), plugin.getConfig().getString("badword.bypass.subtitle"), 10, 70, 20);
+                        event.setCancelled(false);
+                    }
+                }else {
+                    if (getmsg.contains(msg)) {
+                        event.setMessage(plugin.getConfig().getString("badword.setmessage"));
+                        player.sendTitle(plugin.getConfig().getString("badword.message.title"), plugin.getConfig().getString("badword.message.subtitle"), 10, 70, 20);
+                        if (plugin.getConfig().getBoolean("badword.chengfa")){
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),c);
+                            player.sendMessage(ChatColor.RED + "你因为说脏话被惩罚了!");
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
