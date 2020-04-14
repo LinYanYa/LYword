@@ -1,0 +1,49 @@
+package lyword.command;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class notice implements CommandExecutor {
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+
+        Player p = (Player) commandSender;
+        Plugin plugin = lyword.lyword.getPlugin(lyword.lyword.class);
+        String pname = ((Player) commandSender).getPlayer().getName();
+        String up = plugin.getConfig().getString("notice.up");
+        String down = plugin.getConfig().getString("notice.down");
+
+        Player onlineplayer;
+        List<Player> online = new ArrayList();
+        online.addAll(Bukkit.getServer().getOnlinePlayers());
+        Iterator onlinep = online.iterator();
+        onlineplayer = (Player)onlinep.next();
+        String title = plugin.getConfig().getString("notice.title").replaceAll("%player%", p.getName());
+        String subtitle = plugin.getConfig().getString("notice.subtitle").replaceAll("%player%", p.getName());
+
+        if (strings.length == 1){
+            if (p.hasPermission("lyword.notice")){
+                Bukkit.broadcastMessage(up);
+                Bukkit.broadcastMessage("§f§l" + pname + " 说: ");
+                String message = strings[0];
+                Bukkit.broadcastMessage(message.replaceAll("&", "§").replaceAll("%%", " "));
+                Bukkit.broadcastMessage(down);
+                onlineplayer.sendTitle(title, subtitle, 10, 70, 20);
+            }else {
+                p.sendMessage(ChatColor.RED + "你没有权限!");
+            }
+        }else{
+                p.sendMessage(ChatColor.RED + "未知指令,输入/lyhelp查看帮助");
+        }
+        return false;
+    }
+}
