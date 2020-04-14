@@ -1,0 +1,37 @@
+package lyword;
+
+import lyword.command.*;
+import lyword.event.join;
+import lyword.event.leave;
+import lyword.word.word;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class lyword extends JavaPlugin {
+    @Override
+    public void onEnable() {
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 林言综合信息管理插件   " + ChatColor.GREEN + "加载中···");
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 作者:LinYan 论坛ID:林言呀");
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 联系方式:[QQ]1223233300");
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 感谢使用,插件版本v3.0");
+
+        getServer().getPluginManager().registerEvents(new word(),this);
+        getServer().getPluginManager().registerEvents(new join(), this);
+        getServer().getPluginManager().registerEvents(new leave(), this);
+
+        getCommand("lyreload").setExecutor(new reload());
+        getCommand("lynotice").setExecutor(new notice());
+        getCommand("lyhelp").setExecutor(new help());
+        getCommand("lyclear").setExecutor(new clear());
+
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+    }
+    @Override
+    public void onDisable() {
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 林言综合信息管理插件   " + ChatColor.RED + "卸载中···");
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 作者:LinYan 论坛ID:林言呀");
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 联系方式:[QQ]1223233300");
+        getServer().getConsoleSender().sendMessage(ChatColor.BLUE + "[LYword]> 感谢使用,插件版本v3.0");
+    }
+}
